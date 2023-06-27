@@ -1,42 +1,41 @@
 package ru.Filatov.controllers;
 
-import net.bytebuddy.matcher.StringMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.Filatov.dao.UserDao;
 import ru.Filatov.model.User;
+import ru.Filatov.services.UsersService;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
 public class myController {
-    UserDao userDao;
+    private final UsersService usersService;
 
     @Autowired
-    public myController(UserDao userDao) {
-        this.userDao = userDao;
+    public myController(UsersService usersService) {
+        this.usersService = usersService;
     }
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDao.getOneUserByID(id));
+        model.addAttribute("user", usersService.findOne(id));
         return "showuser";
     }
 
     @GetMapping()
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userDao.getListOfUsers());
+        model.addAttribute("users", usersService.findAll());
         return "allusers";
     }
 
     @GetMapping("/new")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
-        return "new";
+        return "newuser";
     }
 
     @PostMapping()
@@ -44,15 +43,15 @@ public class myController {
             , BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "new";
+            return "newuser";
         }
-        userDao.save(user);
+        usersService.save(user);
         return "redirect:/user";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDao.getOneUserByID(id));
+        model.addAttribute("user", usersService.findOne(id));
         return "edit";
     }
 
@@ -62,13 +61,13 @@ public class myController {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-        userDao.update(id, user);
+        usersService.update(id, user);
         return "redirect:/user";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        userDao.delete(id);
+        usersService.delete(id);
         return "redirect:/user";
     }
 }

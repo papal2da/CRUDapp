@@ -2,23 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>new user: : </title>
+    <title>Create new user. : </title>
 </head>
 <body>
 <form th:method ="POST" th:action="@{/user}" th:object="${user}">
-    <label for="name">Введите имя: </label>
+    <label for="name">Enter name of user: </label>
     <input type="text" th:field="*{name}" id="name">
     <div style="color:indianred" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error.</div>
     <br/>
-    <label for="surname">Введите фамилию: </label>
+    <label for="surname">Enter surname of user: </label>
     <input type="text" th:field="*{surname}" id="surname">
     <div style="color:indianred" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname error.</div>
     <br/>
-    <label for="email">Введите почту: </label>
+    <label for="email">Enter email of user: </label>
     <input type="text" th:field="*{email}" id="email">
     <div style="color:indianred" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error.</div>
     <br/>
-    <label for="sex">Введите пол: </label>
+    <label for="sex">Enter gender of user: </label>
     <input type="text" th:field="*{sex}" id="sex">
     <div style="color:indianred" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}">sex error.</div>
     <br/>

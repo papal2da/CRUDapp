@@ -22,11 +22,15 @@ public class User {
     String surname;
     @Column
     @NotEmpty(message = "Email shouldn't be empty!")
-    @Email(message = "email should be valiD!")
+    @Email(message = "Email should be valid!")
     String email;
     @Column
     @NotEmpty(message = "Sex shouldn't be empty!")
     String sex;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public User(String name, String surname, String email, String sex) {
         this.name = name;

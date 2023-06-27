@@ -1,13 +1,13 @@
 package ru.Filatov.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.Filatov.model.User;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @Component
@@ -15,11 +15,11 @@ public class UserDao {
     //    private List<User> users;
     private static int CARS_COUNT = 0;
 
-    private final SessionFactory sessionFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public UserDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public UserDao(EntityManagerFactory entityManagerFactory1) {
+        this.entityManagerFactory = entityManagerFactory1;
     }
 
 //    {
@@ -33,20 +33,20 @@ public class UserDao {
 @Transactional(readOnly = true)
     public User getOneUserByID(int id) {
 //        return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
-    Session session = sessionFactory.getCurrentSession();
-    return session.get(User.class, id);
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    return entityManager.find(User.class, id);
     }
 
     @Transactional(readOnly = true)
     public List<User> getListOfUsers() {
 //        return users;
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from User", User.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
     @Transactional
     public void save(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(user);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.persist(user);
 //        user.setId(++CARS_COUNT);
 //        users.add(user);
     }
@@ -57,8 +57,8 @@ public class UserDao {
 //        userToBeUodated.setSurname(updateUser.getSurname());
 //        userToBeUodated.setSex(updateUser.getSex());
 //        userToBeUodated.setEmail(updateUser.getEmail());
-        Session session = sessionFactory.getCurrentSession();
-        User userToBeUpdated = session.get(User.class, id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        User userToBeUpdated = entityManager.find(User.class, id);
         userToBeUpdated.setName(updatedUser.getName());
         userToBeUpdated.setSurname(updatedUser.getSurname());
         userToBeUpdated.setEmail(updatedUser.getEmail());
@@ -67,7 +67,7 @@ public class UserDao {
     @Transactional
     public void delete(int id) {
 //        users.removeIf(user -> user.getId() == id);
-        Session session = sessionFactory.getCurrentSession();
-        session.remove(session.get(User.class, id));
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.remove(entityManager.find(User.class, id));
     }
 }
