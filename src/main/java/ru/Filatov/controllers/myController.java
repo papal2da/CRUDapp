@@ -6,29 +6,28 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.Filatov.model.User;
-import ru.Filatov.services.UsersService;
-
+import ru.Filatov.services.UserService;
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
 public class myController {
-    private final UsersService usersService;
+    private UserService userService;
 
     @Autowired
-    public myController(UsersService usersService) {
-        this.usersService = usersService;
+    public myController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", userService.findOne(id));
         return "showuser";
     }
 
     @GetMapping()
     public String getAllUsers(Model model) {
-        model.addAttribute("users", usersService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "allusers";
     }
 
@@ -45,13 +44,13 @@ public class myController {
         if (bindingResult.hasErrors()) {
             return "newuser";
         }
-        usersService.save(user);
+        userService.save(user);
         return "redirect:/user";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", userService.findOne(id));
         return "edit";
     }
 
@@ -61,13 +60,13 @@ public class myController {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-        usersService.update(id, user);
+        userService.update(id, user);
         return "redirect:/user";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        usersService.delete(id);
+        userService.delete(id);
         return "redirect:/user";
     }
 }

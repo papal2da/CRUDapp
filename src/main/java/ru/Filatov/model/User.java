@@ -12,21 +12,25 @@ public class User {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
+
     @Column
     @NotEmpty(message = "Name shouldn't be empty!")
     @Size(min = 3, message = "Minimal name size is 3")
-    String name;
+    private String name;
+
     @Column
     @NotEmpty(message = "Surname shouldn't be empty!")
-    String surname;
+    private String surname;
+
     @Column
     @NotEmpty(message = "Email shouldn't be empty!")
     @Email(message = "Email should be valid!")
-    String email;
+    private String email;
+
     @Column
     @NotEmpty(message = "Sex shouldn't be empty!")
-    String sex;
+    private String sex;
 
     public void setId(int id) {
         this.id = id;
