@@ -11,11 +11,11 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
-public class myController {
+public class UserController {
     private UserService userService;
 
     @Autowired
-    public myController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
